@@ -1,0 +1,55 @@
+@font-face {
+  font-family: 'PAYW Pro';
+  src: url('./fonts/PAYWPro-Light.woff2') format('woff2'),
+    url('./fonts/PAYWPro-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PAYW Pro';
+  src: url('./fonts/PAYWPro-Bold.woff2') format('woff2'),
+    url('./fonts/PAYWPro-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PAYW Pro';
+  src: url('./fonts/PAYWPro-ExtraLight.woff2') format('woff2'),
+    url('./fonts/PAYWPro-ExtraLight.woff') format('woff');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PAYW Pro';
+  src: url('./fonts/PAYWPro-Medium.woff2') format('woff2'),
+    url('./fonts/PAYWPro-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PAYW Pro';
+  src: url('./fonts/PAYWPro-Regular.woff2') format('woff2'),
+    url('./fonts/PAYWPro-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PAYW Pro';
+  src: url('./fonts/PAYWPro-SemiBold.woff2') format('woff2'),
+    url('./fonts/PAYWPro-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PAYW Pro';
+  src: url('./fonts/PAYWPro-Thin.woff2') format('woff2'),
+    url('./fonts/PAYWPro-Thin.woff') format('woff');
+  font-weight: 100;
+  font-style: normal;
+}

@@ -1,0 +1,17 @@
+.Login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  form {
+    width: 20rem;
+    display: flex;
+    flex-direction: column;
+
+    h1.title {
+      font-size: 2rem;
+      margin: 0.3rem 0;
+    }
+  }
+}
