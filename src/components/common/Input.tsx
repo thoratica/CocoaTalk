@@ -1,5 +1,5 @@
 import React, { ChangeEventHandler } from 'react';
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const StyledInput = styled.input`
   padding: 0.7rem 1rem;
@@ -8,8 +8,9 @@ const StyledInput = styled.input`
   border-radius: 0.4rem;
   background-color: #f9f9f9;
   font-size: 1rem;
+  height: max-content;
 
-  &[type=submit] {
+  &[type='submit'] {
     background-color: #fee500;
     cursor: pointer;
   }
@@ -17,7 +18,7 @@ const StyledInput = styled.input`
   &:focus {
     outline: none;
   }
-`
+`;
 
 const Input = ({
   className,
@@ -25,14 +26,14 @@ const Input = ({
   placeholder,
   value,
   onChange,
-  autoFocus = false
+  autoFocus = false,
 }: {
   className?: string;
   type?: InputTypes;
   placeholder?: string;
   value?: string | number | readonly string[];
   onChange?: ChangeEventHandler<HTMLInputElement>;
-  autoFocus?: boolean 
+  autoFocus?: boolean;
 }) => <StyledInput className={className} type={type} placeholder={placeholder} value={value} onChange={onChange} autoFocus={autoFocus} />;
 
 export default Input;

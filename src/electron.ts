@@ -13,6 +13,7 @@ const createWindow = () => {
       webviewTag: true,
     },
     show: false,
+    frame: false,
   });
 
   window.once('ready-to-show', window.show);
@@ -23,6 +24,8 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
   createWindow();
+
+  require('@electron/remote/main').initialize();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

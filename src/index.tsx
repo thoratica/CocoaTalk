@@ -1,7 +1,16 @@
+import axios from 'axios';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import { RecoilRoot } from 'recoil';
+import App from './app';
 import './index.scss';
 
-ReactDOM.render(<App />, document.getElementById('root')!);
+axios.defaults.adapter = require('axios/lib/adapters/http');
+
+ReactDOM.render(
+  <RecoilRoot>
+    <App />
+  </RecoilRoot>,
+  document.getElementById('root')!
+);
 document.getElementById('_render')!.remove();
