@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { RecoilRoot } from 'recoil';
-import App from './app';
+import App from './App';
 import './index.scss';
 
 axios.defaults.adapter = require('axios/lib/adapters/http');

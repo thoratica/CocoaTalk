@@ -613,9 +613,9 @@ braces@~3.0.2:
     fill-range "^7.0.1"
 
 bson@^4.2.2:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/bson/-/bson-4.4.0.tgz#6a4cac7de8c5cc24a9bcc059cd42a9852e2bad4a"
-  integrity sha512-uX9Zqzv2DpFXJgQOWKD8nbf0dTQV57WM8eiXDXVWeJYgiu/zIRz61OGLJKwbfSEEjZJ+AgS+7TUT7Y8EloTaqQ==
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/bson/-/bson-4.4.1.tgz#682c3cb8b90b222414ce14ef8398154ba2cc21bc"
+  integrity sha512-Uu4OCZa0jouQJCKOk1EmmyqtdWAP5HVLru4lQxTwzJzxT+sJ13lVpEZU/MATDxtHiekWMAL84oQY3Xn1LpJVSg==
   dependencies:
     buffer "^5.6.0"
 
@@ -883,6 +883,13 @@ create-require@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
   integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
+
+cross-env@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-7.0.3.tgz#865264b29677dc015ba8418918965dd232fc54cf"
+  integrity sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==
+  dependencies:
+    cross-spawn "^7.0.1"
 
 cross-spawn@^7.0.1:
   version "7.0.3"
@@ -1437,9 +1444,9 @@ has@^1.0.3:
     function-bind "^1.1.1"
 
 hash-wasm@^4.4.1:
-  version "4.7.0"
-  resolved "https://registry.yarnpkg.com/hash-wasm/-/hash-wasm-4.7.0.tgz#aff7b8fe293753514687565cfdc7c00f73bd9772"
-  integrity sha512-9Fm6wKkDfCgp525EWkkPC9nceE78KdGbRiiqgu1XydopMiQUJRIPNN48ojWSutP9Y/fQOYIYlQmotDeN5XX9Hg==
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/hash-wasm/-/hash-wasm-4.8.0.tgz#785367f5eaf258b2cd6a45c53437daa4825e4639"
+  integrity sha512-Kz9Rw+qP6NvOwi3k3MOrbmDA5rZQ1/++1hhNf1TJwPAJq/gaMf0xnJvKSZ18zNBgTyw2yYZr41h0nlzCy9RUKA==
 
 history@^4.9.0:
   version "4.10.1"
@@ -1883,7 +1890,7 @@ node-forge@^0.10.0:
   integrity sha512-PPmu8eEeG9saEUvI97fm4OYxXVB6bFvyNTyiUOBichBpFG8A1Ljw3bY62+5oOjDEMHRnd0Y7HQ+x7uzxOzC6JA==
 
 node-kakao@./node-kakao:
-  version "4.2.3"
+  version "4.3.0"
   dependencies:
     axios "^0.21.1"
     bson "^4.2.2"
@@ -2661,9 +2668,9 @@ tslib@^1.9.0:
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
 tslib@^2.0.1:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.2.0.tgz#fb2c475977e35e241311ede2693cee1ec6698f5c"
-  integrity sha512-gS9GVHRU+RGn5KQM2rllAlR3dU6m7AcpJKdtH8gFvQiC4Otgk98XnmMU+nZenHt/+VhnBPWwgrJsyrdcw6i23w==
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.0.tgz#803b8cdab3e12ba581a4ca41c8839bbb0dacb09e"
+  integrity sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==
 
 tunnel@^0.0.6:
   version "0.0.6"

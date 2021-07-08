@@ -6,7 +6,7 @@
   "repository": "https://github.com/thoratica/CocoaTalk.git",
   "scripts": {
     "start": "concurrently --raw \"npm:start:esbuild\" \"npm:start:electron\"",
-    "start:esbuild": "NODE_ENV=development node build.js",
+    "start:esbuild": "cross-env NODE_ENV=development node build.js",
     "start:electron": "electron -r ts-node/register src/electron.ts",
     "build": "concurrently --raw \"npm:build:esbuild\" \"npm:build:electron\"",
     "build:esbuild": "node build.js",
@@ -20,6 +20,7 @@
     "@types/recoil": "^0.0.9",
     "@types/styled-components": "^5.1.10",
     "concurrently": "^6.2.0",
+    "cross-env": "^7.0.3",
     "electron": "^13.1.1",
     "electron-builder": "^22.10.5",
     "esbuild": "^0.12.7",
