@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useSetRecoilState } from 'recoil';
 import { EventEmitter } from 'events';
-import Input from '../components/common/input';
-import { api, authApiClient, client, LoginFormAtom, LogonAtom } from '../store';
-import './login.scss';
+import Input from '../components/common/Input';
+import { authApiClient, client, LoginFormAtom, LogonAtom, setCredential } from '../store';
+import './Login.scss';
 
 const inputEventEmitter = new EventEmitter();
 
@@ -38,20 +38,20 @@ const Login = () => {
     if (!loginRes.success) {
       if (loginRes.status === KnownAuthStatusCode.DEVICE_NOT_REGISTERED) {
         const passcodeRes = await authApiClient.requestPasscode(formData);
-        if (!passcodeRes.success) throw new Error(passcodeRes.status.toString());
+        if (!passcodeRes.success) throw passcodeRes.status;
         setStep(1);
         toast('인증번호를 5분 이내로 입력해주세요.');
         return await registerDevice(email, password);
-      } else throw new Error(loginRes.status.toString());
+      } else throw loginRes.status;
     }
 
     const res = await client.login(loginRes.result);
-    if (!res.success) throw new Error(res.status.toString());
+    if (!res.success) throw res.status.toString();
 
     localStorage.setItem('email', email);
     localStorage.setItem('password', password);
 
-    api.init(loginRes.result);
+    setCredential(loginRes.result);
 
     return setLogon(client.logon);
   };
@@ -68,7 +68,7 @@ const Login = () => {
     });
 
     const registerRes = await authApiClient.registerDevice(formData, passcode, true);
-    if (!registerRes.success) throw new Error(registerRes.status.toString());
+    if (!registerRes.success) throw registerRes.status;
 
     return await login(email, password);
   };
@@ -76,7 +76,20 @@ const Login = () => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (email === undefined || password === undefined) return;
-    toast.promise(login(email, password), { loading: `로그인 중...`, success: '로그인 완료', error: '로그인 실패' });
+
+    login(email, password)
+      .then(() => toast.success('로그인 성공'))
+      .catch(async (error) => {
+        const formData = { email, password, forced: true };
+
+        if (error === KnownAuthStatusCode.DEVICE_NOT_REGISTERED) {
+          const passcodeRes = await authApiClient.requestPasscode(formData);
+          if (!passcodeRes.success) throw passcodeRes.status;
+          setStep(1);
+          toast('인증번호를 5분 이내로 입력해주세요.');
+          return await registerDevice(email, password);
+        } else toast.error(`로그인 실패: ${error}`);
+      });
   };
 
   useEffect(() => {
@@ -90,14 +103,13 @@ const Login = () => {
       setFormData(formData);
 
       const loginRes = await authApiClient.login(formData);
-      if (!loginRes.success) throw loginRes.status;
 
-      console.log(loginRes.result);
+      if (!loginRes.success) throw loginRes.status;
 
       const res = await client.login(loginRes.result);
       if (!res.success) throw res.status;
 
-      api.init(loginRes.result);
+      setCredential(loginRes.result);
 
       return setTimeout(() => setLogon(client.logon), 100);
     })()
@@ -107,7 +119,7 @@ const Login = () => {
 
         if (error === KnownAuthStatusCode.DEVICE_NOT_REGISTERED) {
           const passcodeRes = await authApiClient.requestPasscode(formData);
-          if (!passcodeRes.success) throw new Error(passcodeRes.status.toString());
+          if (!passcodeRes.success) throw passcodeRes.status;
           setStep(1);
           toast('인증번호를 5분 이내로 입력해주세요.');
           return await registerDevice(email, password);
@@ -127,8 +139,17 @@ const Login = () => {
           value={email ?? ''}
           autoFocus
         />
-        <Input className={'password'} type={'password'} placeholder={'비밀번호'} onChange={(e) => setPassword(e.target.value)} value={password ?? ''} />
+        <Input
+          className={'password'}
+          type={'password'}
+          placeholder={'비밀번호'}
+          onChange={(e) => setPassword(e.target.value)}
+          value={password ?? ''}
+        />
         <Input className={'login'} type={'submit'} value={'로그인'} />
+        <span style={{ fontSize: '.8rem', color: '#686868' }}>
+          CocoaTalk을 사용하여 생기는 모든 불이익에 대한 책임은 사용자에게 있습니다.
+        </span>
       </form>
       <span
         style={{

@@ -21,3 +21,5 @@ declare type InputTypes =
   | 'time'
   | 'url'
   | 'week';
+
+declare module 'react-text-ellipsis';

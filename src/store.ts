@@ -1,9 +1,8 @@
-import { AuthApiClient, DefaultConfiguration, TalkClient } from 'node-kakao';
+import { AuthApiClient, DefaultConfiguration, OAuthCredential, TalkClient } from 'node-kakao';
 import { AxiosWebClient } from 'node-kakao/src/api/axios-web-client';
 import { Win32XVCProvider } from 'node-kakao/src/api/xvc';
 import { hostname } from 'os';
 import { atom } from 'recoil';
-import Api from './api';
 
 export const client = new TalkClient();
 export const authApiClient = new AuthApiClient(
@@ -13,7 +12,9 @@ export const authApiClient = new AuthApiClient(
   DefaultConfiguration,
   Win32XVCProvider
 );
-export const api = new Api(authApiClient);
+export let credential: OAuthCredential;
+export const setCredential = (c: OAuthCredential) => (credential = c);
 
 export const LoginFormAtom = atom<{ email?: string; password?: string; forced?: boolean }>({ key: 'loginForm', default: {} });
 export const LogonAtom = atom({ key: 'logon', default: false });
+export const CategoryAtom = atom<'FRIENDS' | 'CHATS' | 'SETTINGS'>({ key: 'category', default: 'FRIENDS' });

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
-import Login from './pages/login';
+import Login from './pages/Login';
 import { useRecoilState } from 'recoil';
 import { LogonAtom } from './store';
-import Main from './pages/main';
-import './app.scss';
-import TrafficButtons from './components/common/trafficButtons';
+import Main from './pages/Main';
+import './App.scss';
+import TrafficButtons from './components/common/TrafficButtons';
 
 const App = () => {
   const [logon, setLogon] = useRecoilState(LogonAtom);
@@ -15,6 +15,7 @@ const App = () => {
       <Toaster position={'bottom-center'} />
       <TrafficButtons />
       {logon ? <Main /> : <Login />}
+      {/* <Main /> */}
     </div>
   );
 };

@@ -1,0 +1,39 @@
+.sidebar {
+  display: flex;
+  box-sizing: border-box;
+  -webkit-app-region: drag;
+
+  .category {
+    width: 4.5rem;
+    height: 100vh;
+    padding: 2.5rem 0 0;
+    background-color: #ececed;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      margin-bottom: 0.5rem;
+      padding: 0;
+
+      .item {
+        height: 3rem;
+        width: 3rem;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        -webkit-app-region: no-drag;
+
+        &.settings {
+          margin-top: auto;
+        }
+      }
+    }
+  }
+}
