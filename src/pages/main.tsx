@@ -3,10 +3,6 @@ import Sidebar from '../components/sidebar/Sidebar';
 import './Main.scss';
 
 const Main = () => {
-  useEffect(() => {
-    (async () => {})();
-  }, []);
-
   return (
     <div className={'main'}>
       <Sidebar />
