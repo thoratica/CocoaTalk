@@ -36,4 +36,110 @@
       }
     }
   }
+
+  .right {
+    width: 20rem;
+    background-color: #f5f5f5;
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      padding: 0.7rem 1rem;
+      height: max-content;
+      width: 100%;
+      box-sizing: border-box;
+      -webkit-app-region: drag;
+      display: flex;
+      justify-content: center;
+
+      .add {
+        margin-left: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    .list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      .item:not(.type) {
+        padding: 0 1.2rem;
+        height: 4rem;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.2s;
+        -webkit-app-region: no-drag;
+
+        .profile {
+          width: 2.7rem;
+          height: 2.7rem;
+          border-radius: 0.7rem;
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+          margin-right: 0.5rem;
+          display: table;
+        }
+
+        .profileWrapper {
+          width: 2.7rem;
+          height: 2.7rem;
+          border-radius: 0.7rem;
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+          margin-right: 0.5rem;
+          display: table;
+          table-layout: fixed;
+
+          thead,
+          tbody {
+            display: flex;
+            justify-content: center;
+          }
+
+          .profile {
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: .4rem;
+            margin: 0;
+          }
+
+          &.profile-2 thead {
+            justify-content: flex-start;
+          }
+
+          &.profile-2 tbody {
+            justify-content: flex-end;
+          }
+        }
+
+        .text {
+          display: flex;
+          flex-direction: column;
+
+          .name {
+            font-weight: 600;
+          }
+
+          .description {
+            color: #5c5c5c;
+            font-size: 0.8rem;
+          }
+        }
+
+        &:hover {
+          background-color: #ececed;
+        }
+      }
+
+      .type {
+        font-weight: 600;
+        padding: 0.2rem 1.2rem;
+      }
+    }
+  }
 }

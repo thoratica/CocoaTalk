@@ -4,7 +4,7 @@ import { resolve } from 'path';
 const createWindow = () => {
   const window = new BrowserWindow({
     height: 720,
-    width: 400,
+    width: 1080,
     webPreferences: {
       webSecurity: false,
       nodeIntegration: true,

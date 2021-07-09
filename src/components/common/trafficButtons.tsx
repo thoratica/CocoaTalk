@@ -15,7 +15,7 @@ const StyledTrafficButton = styled.button<{ role: 'CLOSE' | 'MINIMIZE' | 'MAXIMI
   background-color: ${(props) => (props.role === 'CLOSE' ? '#ff5c5c' : props.role === 'MINIMIZE' ? '#ffbd4c' : '#00ca56')};
 
   &:first-child {
-    margin-left: 0.6rem;
+    margin-left: 0.8rem;
   }
 `;
 
