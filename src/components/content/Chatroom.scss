@@ -3,23 +3,60 @@
   display: flex;
   flex-direction: column;
 
-  .name {
+  .roomName {
     padding: 0.7rem 1rem;
     font-size: 1.5rem;
     font-weight: 600;
+    background-color: #f5f5f5;
     -webkit-app-region: drag;
   }
 
   .chatList {
-    background-color: #fbfbfb;
+    background-color: #b0c7d4;
     height: 100%;
-    border-radius: .4rem 0 0 .4rem;
+    border-radius: 0.4rem 0 0 0.4rem;
+
+    .chat {
+      display: flex;
+      margin-top: 0.3rem;
+
+      .profile {
+        height: 2.5rem;
+        width: 2.5rem;
+        border-radius: 0.7rem;
+        background-size: contain;
+        background-position: center;
+        margin-right: 0.5rem;
+        display: table;
+      }
+
+      .text {
+        display: flex;
+        flex-direction: column;
+        max-width: 90%;
+
+        .name {
+          margin-bottom: 0.2rem;
+        }
+
+        .message {
+          background-color: white;
+          padding: 0.5rem 0.7rem;
+          border-radius: 0.5rem;
+
+          .content {
+            word-break: break-all;
+          }
+        }
+      }
+    }
   }
 
   .form {
     padding: 0.5rem 1rem 0.5rem 0;
     box-sizing: border-box;
     display: flex;
+    background-color: #f5f5f5;
 
     button {
       background-color: #fee500;
@@ -27,7 +64,7 @@
       align-items: center;
       justify-content: center;
       border: 0;
-      border-radius: .4rem;
+      border-radius: 0.4rem;
       height: 2.5rem;
       width: 2.5rem;
     }
@@ -38,16 +75,16 @@
       background-color: #ececed;
       font-size: 1rem;
       border: 0;
-      border-radius: .4rem;
+      border-radius: 0.4rem;
       box-sizing: border-box;
-      margin: 0 .5rem;
+      margin: 0 0.5rem;
 
-      &[type=text] {
+      &[type='text'] {
         width: calc(100% - 6rem);
       }
 
-      &[type=submit] {
-        margin-right: .5rem;
+      &[type='submit'] {
+        margin-right: 0.5rem;
         display: none;
 
         &.selected {

@@ -1,21 +1,34 @@
 import React, { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import Login from './pages/Login';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { ChatListAtom, client, LogonAtom } from './store';
+import { useRecoilState } from 'recoil';
+import { chatList, client, LogonAtom, setChatList } from './store';
 import Main from './pages/Main';
 import './App.scss';
 import TrafficButtons from './components/common/TrafficButtons';
-import { Chatlog, Long } from 'node-kakao';
+import { Chatlog, Long, TalkChannel, TalkChatData } from 'node-kakao';
+import cloneDeep from 'lodash.clonedeep';
+
+const { shell } = window.require('electron');
 
 const App = () => {
   const [logon, setLogon] = useRecoilState(LogonAtom);
-  const setChatList = useSetRecoilState(ChatListAtom);
+  // const [chatList, setChatList] = useRecoilState(ChatListAtom);
+
+  useEffect(() => {
+    // @ts-ignore
+    window.openExternal = shell.openExternal;
+
+    const updateChatList = (data: TalkChatData, channel: TalkChannel) => void chatList[channel.channelId.toString()].push(data.chat);
+    client.on('chat', updateChatList);
+
+    return () => void client.off('chat', updateChatList);
+  }, []);
 
   useEffect(() => {
     (async () => {
       const channels = Array.from(client.channelList.all());
-      const chatList: Chatlog[][] = await Promise.all(
+      const chatList: [string, Chatlog[]][] = await Promise.all(
         channels.map(async (channel) => {
           let startId: Long | undefined = undefined;
           const update: Chatlog[] = [];
@@ -34,16 +47,14 @@ const App = () => {
             }
           }
 
-          return update;
+          return [channel.channelId.toString(), update] as [string, Chatlog[]];
         })
       );
 
-      channels.forEach(channel => channel.on('chat', (data, channel) => {
-        
-      }))
+      channels.forEach((channel) => channel.on('chat', (data, channel) => {}));
 
       console.log(chatList);
-      setChatList(chatList);
+      setChatList(Object.fromEntries(chatList));
     })();
   }, [logon]);
 

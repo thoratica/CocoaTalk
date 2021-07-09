@@ -4,7 +4,7 @@ import { FriendListStruct, FriendStruct } from 'node-kakao/src/api/struct';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import querystring from 'querystring';
-import { CategoryAtom, ChatListAtom, client, credential, SelectedAtom } from '../../store';
+import { CategoryAtom, chatList, client, credential, SelectedAtom } from '../../store';
 import TextEllipsis from 'react-text-ellipsis';
 import ChatroomProfile from './ChatroomProfile';
 import Scrollbars from 'react-custom-scrollbars-2';
@@ -50,7 +50,7 @@ const requestClientInfo = async (credential: OAuthCredential): Promise<ClientInf
 
 const FriendList = () => {
   const category = useRecoilValue(CategoryAtom);
-  const chatList = useRecoilValue(ChatListAtom);
+  // const chatList = useRecoilValue(ChatListAtom);
   const [selected, setSelected] = useRecoilState(SelectedAtom);
   const [clientInfo, setClientInfo] = useState<ClientInfo>();
   const [friends, setFriends] = useState<FriendStruct[]>([]);
@@ -106,7 +106,11 @@ const FriendList = () => {
                 <li className={'item'} key={`channel-${key}`}>
                   <div
                     className={'profile'}
-                    style={{ backgroundImage: `url('${friend.profileImageUrl === '' ? 'https://i.ibb.co/qrDqbNM/profile.png' : friend.profileImageUrl}')` }}
+                    style={{
+                      backgroundImage: `url('${
+                        friend.profileImageUrl === '' ? 'https://i.ibb.co/qrDqbNM/profile.png' : friend.profileImageUrl
+                      }')`,
+                    }}
                   />
                   <div className={'text'}>
                     <TextEllipsis lines={1} tag={'div'} ellipsisChars={'...'} tagClass={'name'} debounceTimeoutOnResize={200}>
@@ -128,7 +132,11 @@ const FriendList = () => {
                 <li className={'item'} key={`friend-${key}`}>
                   <div
                     className={'profile'}
-                    style={{ backgroundImage: `url('${friend.profileImageUrl === '' ? 'https://i.ibb.co/qrDqbNM/profile.png' : friend.profileImageUrl}')` }}
+                    style={{
+                      backgroundImage: `url('${
+                        friend.profileImageUrl === '' ? 'https://i.ibb.co/qrDqbNM/profile.png' : friend.profileImageUrl
+                      }')`,
+                    }}
                   />
                   <div className={'text'}>
                     <TextEllipsis lines={1} tag={'div'} ellipsisChars={'...'} tagClass={'name'} debounceTimeoutOnResize={200}>
@@ -143,7 +151,10 @@ const FriendList = () => {
           ]
         ) : category === 'CHATS' ? (
           Array.from(client.channelList.all()).map((channel, key) => {
-            const members = Array.from(channel.getAllUserInfo()).filter((member) => member.userId.toString() !== client.clientUser.userId.toString());
+            const members = Array.from(channel.getAllUserInfo()).filter((member) => {
+              console.log(client.logon);
+              return member.userId.toString() !== client.clientUser.userId.toString();
+            });
 
             return (
               <li
@@ -160,7 +171,7 @@ const FriendList = () => {
                     {channel.getDisplayName()}
                   </TextEllipsis>
                   <TextEllipsis lines={1} tag={'div'} ellipsisChars={'...'} tagClass={'description'} debounceTimeoutOnResize={200}>
-                    {(chatList[key] ?? [])[(chatList[key]?.length ?? 1) - 1]?.text}
+                    {(chatList[channel.channelId.toString()] ?? [])[(chatList[channel.channelId.toString()]?.length ?? 1) - 1]?.text}
                   </TextEllipsis>
                 </div>
               </li>
