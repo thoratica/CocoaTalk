@@ -2,9 +2,9 @@ import axios from 'axios';
 import { OAuthCredential } from 'node-kakao';
 import { FriendListStruct, FriendStruct } from 'node-kakao/src/api/struct';
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import querystring from 'querystring';
-import { CategoryAtom, ChatListAtom, client, credential } from '../../store';
+import { CategoryAtom, ChatListAtom, client, credential, SelectedAtom } from '../../store';
 import TextEllipsis from 'react-text-ellipsis';
 import ChatroomProfile from './ChatroomProfile';
 import Scrollbars from 'react-custom-scrollbars-2';
@@ -51,6 +51,7 @@ const requestClientInfo = async (credential: OAuthCredential): Promise<ClientInf
 const FriendList = () => {
   const category = useRecoilValue(CategoryAtom);
   const chatList = useRecoilValue(ChatListAtom);
+  const [selected, setSelected] = useRecoilState(SelectedAtom);
   const [clientInfo, setClientInfo] = useState<ClientInfo>();
   const [friends, setFriends] = useState<FriendStruct[]>([]);
   const [vh, setVh] = useState(0);
@@ -143,10 +144,16 @@ const FriendList = () => {
         ) : category === 'CHATS' ? (
           Array.from(client.channelList.all()).map((channel, key) => {
             const members = Array.from(channel.getAllUserInfo()).filter((member) => member.userId.toString() !== client.clientUser.userId.toString());
-            console.log(chatList[key], key);
 
             return (
-              <li className={'item'} key={key}>
+              <li
+                className={'item'}
+                key={key}
+                onClick={() => {
+                  if (selected.id.toString() === channel.channelId.toString()) return;
+                  setSelected({ type: 'CHAT', id: channel.channelId });
+                }}
+              >
                 <ChatroomProfile members={members} />
                 <div className={'text'}>
                   <TextEllipsis lines={1} tag={'div'} ellipsisChars={'...'} tagClass={'name'} debounceTimeoutOnResize={200}>

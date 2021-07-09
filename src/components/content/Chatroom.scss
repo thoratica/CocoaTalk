@@ -7,18 +7,57 @@
     padding: 0.7rem 1rem;
     font-size: 1.5rem;
     font-weight: 600;
-    background-color: #f5f5f5;
     -webkit-app-region: drag;
   }
 
   .chatList {
     background-color: #fbfbfb;
     height: 100%;
+    border-radius: .4rem 0 0 .4rem;
   }
 
   .form {
-    padding: 0.7rem 1rem;
-    font-size: 1rem;
-    height: 1.5rem;
+    padding: 0.5rem 1rem 0.5rem 0;
+    box-sizing: border-box;
+    display: flex;
+
+    button {
+      background-color: #fee500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: .4rem;
+      height: 2.5rem;
+      width: 2.5rem;
+    }
+
+    input {
+      padding: 0 1rem;
+      height: 2.5rem;
+      background-color: #ececed;
+      font-size: 1rem;
+      border: 0;
+      border-radius: .4rem;
+      box-sizing: border-box;
+      margin: 0 .5rem;
+
+      &[type=text] {
+        width: calc(100% - 6rem);
+      }
+
+      &[type=submit] {
+        margin-right: .5rem;
+        display: none;
+
+        &.selected {
+          background-color: #fee500;
+        }
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
   }
 }

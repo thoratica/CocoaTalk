@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler } from 'react';
 import styled from 'styled-components';
 
-const StyledInput = styled.input`
+const StyledInput = styled.input<{ disabled: boolean }>`
   padding: 0.7rem 1rem;
   margin: 0.1rem 0;
   border: 0;
@@ -11,7 +11,7 @@ const StyledInput = styled.input`
   height: max-content;
 
   &[type='submit'] {
-    background-color: #fee500;
+    background-color: ${(props) => (props.disabled ? '#f9f9f9' : '#fee500')};
     cursor: pointer;
   }
 
@@ -27,6 +27,9 @@ const Input = ({
   value,
   onChange,
   autoFocus = false,
+  disabled = false,
+  ref,
+  style,
 }: {
   className?: string;
   type?: InputTypes;
@@ -34,6 +37,21 @@ const Input = ({
   value?: string | number | readonly string[];
   onChange?: ChangeEventHandler<HTMLInputElement>;
   autoFocus?: boolean;
-}) => <StyledInput className={className} type={type} placeholder={placeholder} value={value} onChange={onChange} autoFocus={autoFocus} />;
+  disabled?: boolean;
+  ref?: React.RefObject<HTMLInputElement>;
+  style?: React.CSSProperties;
+}) => (
+  <StyledInput
+    className={className}
+    type={type}
+    placeholder={placeholder}
+    value={value}
+    onChange={onChange}
+    autoFocus={autoFocus}
+    disabled={disabled}
+    ref={ref}
+    style={style}
+  />
+);
 
 export default Input;
