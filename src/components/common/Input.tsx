@@ -28,7 +28,7 @@ const Input = ({
   onChange,
   autoFocus = false,
   disabled = false,
-  ref,
+  inputRef,
   style,
 }: {
   className?: string;
@@ -38,7 +38,7 @@ const Input = ({
   onChange?: ChangeEventHandler<HTMLInputElement>;
   autoFocus?: boolean;
   disabled?: boolean;
-  ref?: React.RefObject<HTMLInputElement>;
+  inputRef?: React.RefObject<HTMLInputElement>;
   style?: React.CSSProperties;
 }) => (
   <StyledInput
@@ -49,7 +49,7 @@ const Input = ({
     onChange={onChange}
     autoFocus={autoFocus}
     disabled={disabled}
-    ref={ref}
+    ref={inputRef}
     style={style}
   />
 );

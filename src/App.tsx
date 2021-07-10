@@ -2,33 +2,57 @@ import React, { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import Login from './pages/Login';
 import { useRecoilState } from 'recoil';
-import { chatList, client, LogonAtom, setChatList } from './store';
+import { chatList, client, LogonAtom } from './store';
 import Main from './pages/Main';
 import './App.scss';
 import TrafficButtons from './components/common/TrafficButtons';
-import { Chatlog, Long, TalkChannel, TalkChatData } from 'node-kakao';
-import cloneDeep from 'lodash.clonedeep';
+import {
+  Chatlog,
+  DeleteAllFeed,
+  DELETED_MESSAGE_OFFSET,
+  KnownChatType,
+  KnownFeedType,
+  Long,
+  TalkChannel,
+  TalkChatData,
+  TypedChatlog,
+} from 'node-kakao';
 
 const { shell } = window.require('electron');
 
 const App = () => {
   const [logon, setLogon] = useRecoilState(LogonAtom);
-  // const [chatList, setChatList] = useRecoilState(ChatListAtom);
 
   useEffect(() => {
     // @ts-ignore
     window.openExternal = shell.openExternal;
 
-    const updateChatList = (data: TalkChatData, channel: TalkChannel) => void chatList[channel.channelId.toString()].push(data.chat);
+    const updateChatList = (data: TalkChatData, channel: TalkChannel) => void chatList.get(channel.channelId.toString())?.push(data.chat);
     client.on('chat', updateChatList);
 
-    return () => void client.off('chat', updateChatList);
+    const deleteChat = (_: Readonly<TypedChatlog<KnownChatType.FEED>>, channel: TalkChannel, feed: DeleteAllFeed) => {
+      const list = chatList.get(channel.channelId.toString())!;
+      const index = list.findIndex((chat) => chat.logId.toString() === feed.logId.toString());
+
+      list[index] = {
+        ...list[index],
+        type: DELETED_MESSAGE_OFFSET,
+      };
+
+      chatList.set(channel.channelId.toString(), list);
+    };
+    client.on('chat_deleted', deleteChat);
+
+    return () => {
+      client.off('chat', updateChatList);
+      client.off('chat_deleted', deleteChat);
+    };
   }, []);
 
   useEffect(() => {
     (async () => {
       const channels = Array.from(client.channelList.all());
-      const chatList: [string, Chatlog[]][] = await Promise.all(
+      const newList: [string, Chatlog[]][] = await Promise.all(
         channels.map(async (channel) => {
           let startId: Long | undefined = undefined;
           const update: Chatlog[] = [];
@@ -51,10 +75,7 @@ const App = () => {
         })
       );
 
-      channels.forEach((channel) => channel.on('chat', (data, channel) => {}));
-
-      console.log(chatList);
-      setChatList(Object.fromEntries(chatList));
+      newList.forEach(([channel, list]) => chatList.set(channel, list));
     })();
   }, [logon]);
 

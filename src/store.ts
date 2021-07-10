@@ -15,8 +15,7 @@ export const authApiClient = new AuthApiClient(
 export let credential: OAuthCredential;
 export const setCredential = (c: OAuthCredential) => (credential = c);
 
-export let chatList: { [id: string]: Chatlog[] } = {};
-export const setChatList = (v: { [id: string]: Chatlog[] }) => (chatList = v);
+export let chatList = new Map<string, Chatlog[]>();
 
 export const LoginFormAtom = atom<{ email?: string; password?: string; forced?: boolean }>({ key: 'loginForm', default: {} });
 export const LogonAtom = atom({ key: 'logon', default: false });

@@ -10,25 +10,6 @@ import { Chatlog } from 'node-kakao';
 const Sidebar = () => {
   const category = useRecoilValue(CategoryAtom);
 
-  useEffect(() => {
-    Array.from(client.channelList.all()).forEach((channel) => {
-      const proxy = new Proxy(chatList[channel.channelId.toString()], {
-        get: function (target, prop, reciever) {
-          return 'world';
-        },
-        set: function (target, property, value, receiver) {
-          // @ts-expect-error
-          console.log('setting ' + property + ' for ' + target + ' with value ' + value);
-          // @ts-expect-error
-          target[property] = value;
-
-          return true;
-        },
-      });
-      console.log(proxy.push({} as Chatlog));
-    });
-  }, []);
-
   return (
     <section className={'sidebar'}>
       <Category />

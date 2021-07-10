@@ -8,6 +8,8 @@ import { CategoryAtom, chatList, client, credential, SelectedAtom } from '../../
 import TextEllipsis from 'react-text-ellipsis';
 import ChatroomProfile from './ChatroomProfile';
 import Scrollbars from 'react-custom-scrollbars-2';
+import useForceUpdate from '../../hooks/useForceUpdate';
+import { useRef } from 'react';
 
 const requestFriendList = async (credential: OAuthCredential): Promise<FriendListStruct> =>
   (
@@ -50,19 +52,23 @@ const requestClientInfo = async (credential: OAuthCredential): Promise<ClientInf
 
 const FriendList = () => {
   const category = useRecoilValue(CategoryAtom);
-  // const chatList = useRecoilValue(ChatListAtom);
   const [selected, setSelected] = useRecoilState(SelectedAtom);
   const [clientInfo, setClientInfo] = useState<ClientInfo>();
   const [friends, setFriends] = useState<FriendStruct[]>([]);
   const [vh, setVh] = useState(0);
+  const [width, setWidth] = useState(0);
+  const forceUpdate = useForceUpdate();
+  const ref = useRef<Scrollbars>(null);
 
   useEffect(() => {
+    client.on('chat', () => forceUpdate());
+
     const updateVh = () => setVh(window.innerHeight);
     updateVh();
 
     window.addEventListener('resize', updateVh);
     return () => window.removeEventListener('resize', updateVh);
-  });
+  }, []);
 
   useEffect(() => {
     if (category === 'FRIENDS') {
@@ -71,8 +77,10 @@ const FriendList = () => {
     }
   }, [category]);
 
+  useEffect(() => setWidth(ref.current!.getClientWidth()), [ref]);
+
   return (
-    <Scrollbars style={{ height: `${vh - 51.6}px` }}>
+    <Scrollbars style={{ height: `${vh - 51.6}px` }} ref={ref}>
       <ul className={'list'}>
         {category === 'FRIENDS' ? (
           [
@@ -87,7 +95,7 @@ const FriendList = () => {
                   }')`,
                 }}
               />
-              <div className={'text'}>
+              <div className={'text'} style={{ width }}>
                 <TextEllipsis lines={1} tag={'div'} ellipsisChars={'...'} tagClass={'name'} debounceTimeoutOnResize={200}>
                   {clientInfo?.nickName}
                 </TextEllipsis>
@@ -151,10 +159,9 @@ const FriendList = () => {
           ]
         ) : category === 'CHATS' ? (
           Array.from(client.channelList.all()).map((channel, key) => {
-            const members = Array.from(channel.getAllUserInfo()).filter((member) => {
-              console.log(client.logon);
-              return member.userId.toString() !== client.clientUser.userId.toString();
-            });
+            const members = Array.from(channel.getAllUserInfo()).filter(
+              (member) => member.userId.toString() !== client.clientUser.userId.toString()
+            );
 
             return (
               <li
@@ -171,7 +178,7 @@ const FriendList = () => {
                     {channel.getDisplayName()}
                   </TextEllipsis>
                   <TextEllipsis lines={1} tag={'div'} ellipsisChars={'...'} tagClass={'description'} debounceTimeoutOnResize={200}>
-                    {(chatList[channel.channelId.toString()] ?? [])[(chatList[channel.channelId.toString()]?.length ?? 1) - 1]?.text}
+                    {(chatList.get(channel.channelId.toString()) ?? [])[(chatList.get(channel.channelId.toString())?.length ?? 1) - 1]?.text}
                   </TextEllipsis>
                 </div>
               </li>
