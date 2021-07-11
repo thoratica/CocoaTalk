@@ -189,9 +189,15 @@
       border-radius: 0.4rem;
       box-sizing: border-box;
       margin-right: 0.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: table;
+
+      .button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.5rem;
+        width: 2.5rem;
+      }
     }
   }
 }

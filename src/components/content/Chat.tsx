@@ -99,42 +99,46 @@ const ChatroomItem = ({
 
   return (
     <>
-      <div
-        className={'chat'}
-        data-id={logId.toString()}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          show(e);
-        }}
-        ref={ref}
-      >
-        <Menu id={logId.toString()}>
+      <Menu id={logId.toString()}>
+        {type !== KnownChatType.PHOTO ? (
           <Item onClick={() => copy(text ?? '')}>텍스트 복사</Item>
-          {byMe && type < DELETED_MESSAGE_OFFSET && (
-            <Item
-              onClick={async () => {
-                const channel = client.channelList.get(channelId)!;
-                const deleteChatRes = await channel.deleteChat({ logId });
-                if (!deleteChatRes.success) return toast.error(`메시지 삭제 실패: ${deleteChatRes.status.toString()}`);
+        ) : (
+          <Item onClick={() => copy((attachment?.url as string | undefined) ?? '')}>이미지 주소 복사</Item>
+        )}
+        {byMe && type < DELETED_MESSAGE_OFFSET && (
+          <Item
+            onClick={async () => {
+              const channel = client.channelList.get(channelId)!;
+              const deleteChatRes = await channel.deleteChat({ logId });
+              if (!deleteChatRes.success) return toast.error(`메시지 삭제 실패: ${deleteChatRes.status.toString()}`);
 
-                client.emit('chat_deleted', {} as Readonly<TypedChatlog<KnownChatType.FEED>>, channel, {
-                  feedType: KnownFeedType.DELETE_TO_ALL,
-                  logId,
-                });
-              }}
-            >
-              삭제
-            </Item>
-          )}
-        </Menu>
-        {(() => {
-          switch (type) {
-            case KnownChatType.FEED:
-              const feed = JSON.parse(text ?? '{}');
+              client.emit('chat_deleted', {} as Readonly<TypedChatlog<KnownChatType.FEED>>, channel, {
+                feedType: KnownFeedType.DELETE_TO_ALL,
+                logId,
+              });
+            }}
+          >
+            삭제
+          </Item>
+        )}
+      </Menu>
+      {(() => {
+        switch (type) {
+          case KnownChatType.FEED:
+            const feed = JSON.parse(text ?? '{}');
 
-              switch (feed.feedType) {
-                case KnownFeedType.INVITE:
-                  return (
+            switch (feed.feedType) {
+              case KnownFeedType.INVITE:
+                return (
+                  <div
+                    className={'chat'}
+                    data-id={logId.toString()}
+                    onContextMenu={(e) => {
+                      e.preventDefault();
+                      show(e);
+                    }}
+                    ref={ref}
+                  >
                     <div className={'text invite'}>
                       <div className={'message'}>
                         <span className={'inviter'}>{feed.inviter.nickName}</span>님이{' '}
@@ -142,13 +146,23 @@ const ChatroomItem = ({
                         님을 초대했습니다.
                       </div>
                     </div>
-                  );
-                case KnownFeedType.DELETE_TO_ALL:
-                  // ref.current!.remove();
-                  return <></>;
-                default:
-                  return (
-                    <>
+                  </div>
+                );
+              case KnownFeedType.DELETE_TO_ALL:
+                // ref.current!.remove();
+                return <></>;
+              default:
+                return (
+                  <>
+                    <div
+                      className={'chat'}
+                      data-id={logId.toString()}
+                      onContextMenu={(e) => {
+                        e.preventDefault();
+                        show(e);
+                      }}
+                      ref={ref}
+                    >
                       <div className={'profile'} style={profileStyle} />
                       <div className={'text'}>
                         {!hideName && <div className={'name'}>{author?.nickname ?? '(알 수 없음)'}</div>}
@@ -166,12 +180,22 @@ const ChatroomItem = ({
                           </span>
                         </div>
                       </div>
-                    </>
-                  );
-              }
-            case KnownChatType.TEXT:
-              return (
-                <>
+                    </div>
+                  </>
+                );
+            }
+          case KnownChatType.TEXT:
+            return (
+              <>
+                <div
+                  className={'chat'}
+                  data-id={logId.toString()}
+                  onContextMenu={(e) => {
+                    e.preventDefault();
+                    show(e);
+                  }}
+                  ref={ref}
+                >
                   <div className={'profile'} style={profileStyle} />
                   <div className={'text'}>
                     {!hideName && <div className={'name'}>{author?.nickname ?? '(알 수 없음)'}</div>}
@@ -184,33 +208,58 @@ const ChatroomItem = ({
                       />
                     </div>
                   </div>
-                </>
-              );
-            case KnownChatType.PHOTO:
-              const maxWidth = (width - 395.2) * 0.9;
-              const maxHeight = 320;
-              const img = attachment as PhotoAttachment;
+                </div>
+              </>
+            );
+          case KnownChatType.PHOTO:
+            const maxWidth = (width - 395.2) * 0.9;
+            const maxHeight = 320;
+            const img = attachment as PhotoAttachment;
 
-              const [w, h] = (() => {
-                if (img.w <= maxWidth && img.h <= maxHeight) return [img.w, img.h];
-                if (img.w * (maxHeight / img.h) > maxWidth) return [maxWidth, img.h * (maxWidth / img.w)];
-                else return [img.w * (maxHeight / img.h), maxHeight];
-              })();
+            const [w, h] = (() => {
+              if (img.w <= maxWidth && img.h <= maxHeight) return [img.w, img.h];
+              if (img.w * (maxHeight / img.h) > maxWidth) return [maxWidth, img.h * (maxWidth / img.w)];
+              else return [img.w * (maxHeight / img.h), maxHeight];
+            })();
 
-              return (
-                <>
+            return (
+              <>
+                <div
+                  className={'chat'}
+                  data-id={logId.toString()}
+                  onContextMenu={(e) => {
+                    e.preventDefault();
+                    show(e);
+                  }}
+                  ref={ref}
+                >
                   <div className={'profile'} style={profileStyle} />
                   <div className={'text'}>
                     {!hideName && <div className={'name'}>{author?.nickname ?? '(알 수 없음)'}</div>}
-                    <img className={'image'} src={attachment.url as string} height={h <= 0 ? 100 : h} width={w <= 0 ? 100 : w} />
+                    <img
+                      className={'image'}
+                      src={attachment.url as string}
+                      height={Number.isNaN(Number(h <= 0 ? 100 : h)) ? 100 : h <= 0 ? 100 : h}
+                      width={Number.isNaN(Number(w <= 0 ? 100 : w)) ? 100 : w <= 0 ? 100 : w}
+                    />
                   </div>
-                </>
-              );
-            case KnownChatType.REPLY:
-              const reply = attachment as ReplyAttachment;
+                </div>
+              </>
+            );
+          case KnownChatType.REPLY:
+            const reply = attachment as ReplyAttachment;
 
-              return (
-                <>
+            return (
+              <>
+                <div
+                  className={'chat'}
+                  data-id={logId.toString()}
+                  onContextMenu={(e) => {
+                    e.preventDefault();
+                    show(e);
+                  }}
+                  ref={ref}
+                >
                   <div className={'profile'} style={profileStyle} />
                   <div className={'text'}>
                     {!hideName && <div className={'name'}>{author?.nickname ?? '(알 수 없음)'}</div>}
@@ -241,19 +290,29 @@ const ChatroomItem = ({
                       />
                     </div>
                   </div>
-                </>
-              );
-            case KnownChatType.STICKER:
-              const emoticon = attachment as EmoticonAttachment;
+                </div>
+              </>
+            );
+          case KnownChatType.STICKER:
+            const emoticon = attachment as EmoticonAttachment;
 
-              console.log(emoticon.path);
+            console.log(emoticon.path);
 
-              const playSound = async () => {
-                if (emoticon.sound) await new Audio(`http://item-kr.talk.kakao.co.kr/dw/${emoticon.sound}`).play();
-              };
+            const playSound = async () => {
+              if (emoticon.sound) await new Audio(`http://item-kr.talk.kakao.co.kr/dw/${emoticon.sound}`).play();
+            };
 
-              return (
-                <>
+            return (
+              <>
+                <div
+                  className={'chat'}
+                  data-id={logId.toString()}
+                  onContextMenu={(e) => {
+                    e.preventDefault();
+                    show(e);
+                  }}
+                  ref={ref}
+                >
                   <div className={'profile'} style={profileStyle} />
                   <div className={'text'}>
                     {!hideName && <div className={'name'}>{author?.nickname ?? '(알 수 없음)'}</div>}
@@ -266,12 +325,22 @@ const ChatroomItem = ({
                       onLoad={playSound}
                     />
                   </div>
-                </>
-              );
-            default:
-              if (type >= DELETED_MESSAGE_OFFSET)
-                return (
-                  <>
+                </div>
+              </>
+            );
+          default:
+            if (type >= DELETED_MESSAGE_OFFSET)
+              return (
+                <>
+                  <div
+                    className={'chat'}
+                    data-id={logId.toString()}
+                    onContextMenu={(e) => {
+                      e.preventDefault();
+                      show(e);
+                    }}
+                    ref={ref}
+                  >
                     <div className={'profile'} style={profileStyle} />
                     <div className={'text'}>
                       {!hideName && <div className={'name'}>{author?.nickname ?? '(알 수 없음)'}</div>}
@@ -284,11 +353,21 @@ const ChatroomItem = ({
                         </div>
                       </div>
                     </div>
-                  </>
-                );
+                  </div>
+                </>
+              );
 
-              return (
-                <>
+            return (
+              <>
+                <div
+                  className={'chat'}
+                  data-id={logId.toString()}
+                  onContextMenu={(e) => {
+                    e.preventDefault();
+                    show(e);
+                  }}
+                  ref={ref}
+                >
                   <div className={'profile'} style={profileStyle} />
                   <div className={'text'}>
                     {!hideName && <div className={'name'}>{author?.nickname ?? '(알 수 없음)'}</div>}
@@ -304,11 +383,11 @@ const ChatroomItem = ({
                       </span>
                     </div>
                   </div>
-                </>
-              );
-          }
-        })()}
-      </div>
+                </div>
+              </>
+            );
+        }
+      })()}
     </>
   );
 };

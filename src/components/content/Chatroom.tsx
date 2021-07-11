@@ -25,9 +25,23 @@ const Chatroom = () => {
   const [useAutoScroll, setUseAutoScroll] = useState(true);
   const [disabled, setDisabled] = useState(true);
   const ref = useRef<Scrollbars>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const [s, updateState] = useState({});
   const forceUpdate = useCallback(() => updateState({}), []);
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const message = inputRef.current!.value;
+    if (message.trim() === '') return;
+
+    const sendChatRes = await channel?.sendChat(message);
+    if (!sendChatRes?.success) return toast.error(`메시지 전송 실패: ${sendChatRes?.status}`);
+
+    chatList.get(selected.id.toString())?.push(sendChatRes.result);
+    inputRef.current!.value = '';
+    setDisabled(true);
+    forceUpdate();
+  };
 
   useEffect(() => {
     (ref.current!.container.querySelector('div[style]')! as HTMLDivElement).style.padding = '0.5rem 0.9rem';
@@ -100,23 +114,11 @@ const Chatroom = () => {
           })}
         </Scrollbars>
       </div>
-      <form
-        className={'form'}
-        onSubmit={async (e) => {
-          e.preventDefault();
-          const message = inputRef.current!.value;
-          if (message.trim() === '') return;
-
-          const sendChatRes = await channel?.sendChat(message);
-          if (!sendChatRes?.success) return toast.error(`메시지 전송 실패: ${sendChatRes?.status}`);
-
-          chatList.get(selected.id.toString())?.push(sendChatRes.result);
-          inputRef.current!.value = '';
-          forceUpdate();
-        }}
-      >
+      <form className={'form'} onSubmit={onSubmit}>
         <label className={'file'}>
-          <Paperclip size={18} strokeWidth={1.7} />
+          <div className={'button'}>
+            <Paperclip size={18} strokeWidth={1.7} />
+          </div>
           <input
             type={'file'}
             multiple={true}
@@ -178,7 +180,6 @@ const Chatroom = () => {
           />
         </label>
         <Input
-          type={'text'}
           placeholder={'메시지를 입력하세요...'}
           inputRef={inputRef}
           onChange={(e) => {
@@ -190,6 +191,8 @@ const Chatroom = () => {
               if (value === '') setDisabled(true);
             }
           }}
+          onSubmit={onSubmit}
+          multiline
         />
         <label>
           <Input type={'submit'} />
