@@ -16,7 +16,21 @@ import UnsupportedFeed from './chat/feed/Unsupported';
 import Deleted from './chat/Deleted';
 import Invite from './chat/feed/Invite';
 
-const ChatroomItem = ({ chat, channel, hideName, measure }: { chat: Chatlog; channel: TalkChannel | undefined; hideName: boolean; measure: () => void }) => {
+const ChatroomItem = ({
+  chat,
+  channel,
+  hideName,
+  measure,
+  scrollTo,
+  index,
+}: {
+  chat: Chatlog;
+  channel: TalkChannel | undefined;
+  hideName: boolean;
+  measure: () => void;
+  scrollTo: (i: number) => void;
+  index: number;
+}) => {
   const userInfo = channel?.getUserInfo(chat.sender);
   const [width, setWidth] = useState(0);
   const { show: showContextMenu } = useContextMenu({ id: chat.logId.toString() });
@@ -27,7 +41,7 @@ const ChatroomItem = ({ chat, channel, hideName, measure }: { chat: Chatlog; cha
     window.addEventListener('resize', () => setWidth(window.innerWidth));
   }, []);
 
-  const props = { chat, channel, showContextMenu, chatRef, hideName };
+  const props = { chat, channel, showContextMenu, chatRef, hideName, index };
 
   return (
     <>
@@ -71,7 +85,7 @@ const ChatroomItem = ({ chat, channel, hideName, measure }: { chat: Chatlog; cha
           case KnownChatType.PHOTO:
             return <Photo {...props} width={width} measure={measure} />;
           case KnownChatType.REPLY:
-            return <Reply {...props} />;
+            return <Reply {...props} scrollTo={scrollTo} />;
           case KnownChatType.STICKER:
             return <Sticker {...props} measure={measure} />;
           default:

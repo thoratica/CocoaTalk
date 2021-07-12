@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@electron/remote": "^1.2.0",
+    "buffer-to-data-url": "^1.0.0",
     "copy-text-to-clipboard": "^3.0.1",
     "file-type": "^16.5.1",
     "image-size": "^1.0.0",

@@ -11,6 +11,7 @@ const Unsupported = ({
   showContextMenu,
   chatRef,
   hideName,
+  index,
 }: {
   chat: Chatlog;
   feed: { feedType: KnownFeedType };
@@ -18,6 +19,7 @@ const Unsupported = ({
   showContextMenu: (event: TriggerEvent, params?: Pick<ContextMenuParams, 'id' | 'props' | 'position'> | undefined) => void;
   chatRef: React.RefObject<HTMLDivElement>;
   hideName: boolean;
+  index: number;
 }) => {
   const userInfo = channel?.getUserInfo(chat.sender);
 
@@ -26,6 +28,7 @@ const Unsupported = ({
       <div
         className={'chat'}
         data-id={chat.logId.toString()}
+        data-index={index}
         onContextMenu={(e) => {
           e.preventDefault();
           showContextMenu(e);

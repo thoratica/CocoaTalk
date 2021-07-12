@@ -74,7 +74,17 @@ const Chatroom = () => {
       const hideName = key !== 0 && lastRenderedMsgAuthor === chat.sender.userId.toString();
       lastRenderedMsgAuthor = chat.sender.userId.toString();
 
-      return ({ measure }: { measure: () => void }) => <Chat chat={chat} channel={channel} hideName={hideName} key={key} measure={measure} />;
+      return ({ measure }: { measure: () => void }) => (
+        <Chat
+          chat={chat}
+          channel={channel}
+          hideName={hideName}
+          key={key}
+          measure={measure}
+          scrollTo={(i: number) => void listRef.current?.scrollToRow(i)}
+          index={key}
+        />
+      );
     }) ?? [];
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

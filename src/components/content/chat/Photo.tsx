@@ -1,9 +1,12 @@
 import React from 'react';
-import {  Chatlog, TalkChannel } from 'node-kakao';
+import { Chatlog, TalkChannel } from 'node-kakao';
 import { ContextMenuParams, TriggerEvent } from 'react-contexify';
 import { profileStyle } from '../../../utils';
 import Image from 'react-imgp';
-import sizeOf from 'image-size'
+import sizeOf from 'image-size';
+import { useEffect } from 'react';
+import { get } from 'http';
+import { useState } from 'react';
 
 const Photo = ({
   chat,
@@ -13,6 +16,7 @@ const Photo = ({
   hideName,
   width,
   measure,
+  index,
 }: {
   chat: Chatlog;
   channel: TalkChannel | undefined;
@@ -21,10 +25,11 @@ const Photo = ({
   hideName: boolean;
   width: number;
   measure: () => void;
+  index: number;
 }) => {
   const userInfo = channel?.getUserInfo(chat.sender);
 
-  const maxWidth = (width - 395.2) * 0.9;
+  const maxWidth = (width - 464) * 0.9;
   const maxHeight = 320;
   const img = (chat.attachment ?? { h: 100, w: 100, url: undefined }) as { h: number; w: number; url: string | undefined };
 
@@ -34,13 +39,12 @@ const Photo = ({
     else return [img.w * (maxHeight / img.h), maxHeight];
   })();
 
-  sizeOf()
-
   return (
     <>
       <div
         className={'chat'}
         data-id={chat.logId.toString()}
+        data-index={index}
         onContextMenu={(e) => {
           e.preventDefault();
           showContextMenu(e);
@@ -56,7 +60,7 @@ const Photo = ({
             height={Number.isNaN(Number(h <= 0 ? 100 : h)) ? 100 : h <= 0 ? 100 : h}
             width={Number.isNaN(Number(w <= 0 ? 100 : w)) ? 100 : w <= 0 ? 100 : w}
             onLoad={measure}
-            loader={<div style={{height: }}></div>}
+            loader={<div style={{ height: h <= 0 ? 100 : h, width: w <= 0 ? 100 : w }}></div>}
           />
         </div>
       </div>

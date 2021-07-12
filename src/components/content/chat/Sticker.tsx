@@ -10,6 +10,7 @@ const Sticker = ({
   chatRef,
   hideName,
   measure,
+  index,
 }: {
   chat: Chatlog;
   channel: TalkChannel | undefined;
@@ -17,6 +18,7 @@ const Sticker = ({
   chatRef: React.RefObject<HTMLDivElement>;
   hideName: boolean;
   measure: () => void;
+  index: number;
 }) => {
   const userInfo = channel?.getUserInfo(chat.sender);
   const emoticon = chat.attachment as EmoticonAttachment;
@@ -30,6 +32,7 @@ const Sticker = ({
       <div
         className={'chat'}
         data-id={chat.logId.toString()}
+        data-index={index}
         onContextMenu={(e) => {
           e.preventDefault();
           showContextMenu(e);

@@ -2,6 +2,7 @@ import React from 'react';
 import { Chatlog, ReplyAttachment, TalkChannel } from 'node-kakao';
 import { ContextMenuParams, TriggerEvent } from 'react-contexify';
 import { autolink, profileStyle } from '../../../utils';
+import { chatList as _chatList } from '../../../store';
 
 const Reply = ({
   chat,
@@ -9,12 +10,16 @@ const Reply = ({
   showContextMenu,
   chatRef,
   hideName,
+  scrollTo,
+  index,
 }: {
   chat: Chatlog;
   channel: TalkChannel | undefined;
   showContextMenu: (event: TriggerEvent, params?: Pick<ContextMenuParams, 'id' | 'props' | 'position'> | undefined) => void;
   chatRef: React.RefObject<HTMLDivElement>;
   hideName: boolean;
+  scrollTo: (i: number) => void;
+  index: number;
 }) => {
   const userInfo = channel?.getUserInfo(chat.sender);
   const reply = chat.attachment as ReplyAttachment;
@@ -24,6 +29,7 @@ const Reply = ({
       <div
         className={'chat'}
         data-id={chat.logId.toString()}
+        data-index={index}
         onContextMenu={(e) => {
           e.preventDefault();
           showContextMenu(e);
@@ -37,13 +43,21 @@ const Reply = ({
             <div
               className={'reply'}
               onClick={() => {
-                // const target: HTMLDivElement | null = parentRef.current!.container.querySelector(
-                //   `.chat[data-id='${reply.src_logId.toString()}']`
-                // );
-                // if (target === null) return toast.error('대상 메시지를 찾을 수 없습니다!');
-                // parentRef.current!.scrollTop(target.offsetTop - parentRef.current!.getClientHeight() / 2 + target.clientHeight / 2);
-                // target.classList.add('focus');
-                // setTimeout(() => target.classList.remove('focus'), 1000);
+                const chatList = _chatList.get(channel!.channelId.toString())!;
+                const index = chatList.findIndex((chat) => chat.logId.toString() === reply.src_logId.toString());
+
+                console.log(index);
+
+                scrollTo(index);
+
+                setTimeout(() => {
+                  const target: HTMLDivElement | undefined | null = chatRef.current?.parentNode?.parentNode?.querySelector(
+                    `.chat[data-id='${reply.src_logId.toString()}']`
+                  );
+
+                  target?.classList.add('focus');
+                  setTimeout(() => target?.classList.remove('focus'), 1000);
+                }, 100);
               }}
             >
               <span className={'label'}>{channel?.getUserInfo({ userId: reply.src_userId })?.nickname ?? '(알 수 없음)'}에게 답장</span>

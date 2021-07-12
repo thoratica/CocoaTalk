@@ -79,7 +79,7 @@
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.14.4.tgz#a5c560d6db6cd8e6ed342368dea8039232cbab18"
   integrity sha512-ArliyUsWDUqEGfWcmzpGUzNfLxTdTp6WU4IuP6QFSp9gGfWS6boxFCkJSJ/L4+RG8z/FnIU3WxCk6hPL9SSWeA==
 
-"@babel/runtime@^7.7.2", "@babel/runtime@^7.8.7":
+"@babel/runtime@^7.7.2", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
   version "7.14.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.6.tgz#535203bc0892efc7dec60bdc27b2ecf6e409062d"
   integrity sha512-/PCB2uJ7oM44tz8YhC4Z/6PeOKXp4K588f+5M3clr1M4zbqztlo0XEfJ2LEzj/FgwfgGcIdl8n7YYjTCI0BYwg==
@@ -615,6 +615,13 @@ buffer-from@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
   integrity sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
+
+buffer-to-data-url@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/buffer-to-data-url/-/buffer-to-data-url-1.0.0.tgz#7ac95ac3ded94a62aa00519e2be487db51a07fcf"
+  integrity sha512-LtIlHOSgBKTSuC83syIou7GxbyJXB+kfQiiy+8/G/pcyGMvxUIg22DQRFsQeX5lOO5tMK5ZDuwSVyZ/Gxa1pKg==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
 
 buffer@^5.1.0, buffer@^5.6.0:
   version "5.7.1"
