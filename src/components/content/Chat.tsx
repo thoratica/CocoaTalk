@@ -16,7 +16,7 @@ import UnsupportedFeed from './chat/feed/Unsupported';
 import Deleted from './chat/Deleted';
 import Invite from './chat/feed/Invite';
 
-const ChatroomItem = ({ chat, channel, hideName }: { chat: Chatlog; channel: TalkChannel | undefined; hideName: boolean }) => {
+const ChatroomItem = ({ chat, channel, hideName, measure }: { chat: Chatlog; channel: TalkChannel | undefined; hideName: boolean; measure: () => void }) => {
   const userInfo = channel?.getUserInfo(chat.sender);
   const [width, setWidth] = useState(0);
   const { show: showContextMenu } = useContextMenu({ id: chat.logId.toString() });
@@ -69,11 +69,11 @@ const ChatroomItem = ({ chat, channel, hideName }: { chat: Chatlog; channel: Tal
           case KnownChatType.TEXT:
             return <Text {...props} />;
           case KnownChatType.PHOTO:
-            return <Photo {...props} width={width} />;
+            return <Photo {...props} width={width} measure={measure} />;
           case KnownChatType.REPLY:
             return <Reply {...props} />;
           case KnownChatType.STICKER:
-            return <Sticker {...props} />;
+            return <Sticker {...props} measure={measure} />;
           default:
             if (chat.type >= DELETED_MESSAGE_OFFSET) return <Deleted {...props} />;
 

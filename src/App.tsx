@@ -11,7 +11,6 @@ import {
   DeleteAllFeed,
   DELETED_MESSAGE_OFFSET,
   KnownChatType,
-  KnownFeedType,
   Long,
   TalkChannel,
   TalkChatData,

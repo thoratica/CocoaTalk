@@ -46,6 +46,15 @@ const Chatroom = () => {
 
     updateHeight();
 
+    chatList
+      .filter((chat) => chat.type === KnownChatType.PHOTO)
+      .reverse()
+      .map((chat) => {
+        const img = document.createElement('img');
+        img.src = (chat.attachment as { url: string }).url;
+        img.onload = () => console.log(img.src);
+      });
+
     return () => {
       window.addEventListener('resize', () => updateHeight());
       client.on('chat', () => forceUpdate());
@@ -54,18 +63,18 @@ const Chatroom = () => {
   }, []);
   useEffect(() => {
     setName(channel?.getDisplayName() ?? '(알 수 없음)');
-    listRef.current?.scrollToRow(chatList.length ?? 0);
+    setTimeout(() => listRef.current?.scrollToRow(chatList.length ?? 0), 100);
   }, [selected]);
   useEffect(() => void (useAutoScroll && listRef.current?.scrollToRow(chatList.length ?? 0)), [s]);
 
   const items =
     chatList.map((chat, key) => {
-      if (chatList === undefined || chat === undefined) return <></>;
+      if (chatList === undefined || chat === undefined) return () => <></>;
 
       const hideName = key !== 0 && lastRenderedMsgAuthor === chat.sender.userId.toString();
       lastRenderedMsgAuthor = chat.sender.userId.toString();
 
-      return <Chat chat={chat} channel={channel} hideName={hideName} key={key} />;
+      return ({ measure }: { measure: () => void }) => <Chat chat={chat} channel={channel} hideName={hideName} key={key} measure={measure} />;
     }) ?? [];
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -146,7 +155,7 @@ const Chatroom = () => {
         </span>
       </div>
       <div className={'chatList'} ref={listParentRef}>
-        <VirtualScroll items={items} height={listHeight - 0.5} listRef={listRef} />
+        <VirtualScroll items={items} height={listHeight - 0.5} listRef={listRef} reRender={selected} />
       </div>
       <form className={'form'} onSubmit={onSubmit}>
         <label className={'file'}>

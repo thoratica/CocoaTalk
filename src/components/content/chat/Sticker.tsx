@@ -9,12 +9,14 @@ const Sticker = ({
   showContextMenu,
   chatRef,
   hideName,
+  measure,
 }: {
   chat: Chatlog;
   channel: TalkChannel | undefined;
   showContextMenu: (event: TriggerEvent, params?: Pick<ContextMenuParams, 'id' | 'props' | 'position'> | undefined) => void;
   chatRef: React.RefObject<HTMLDivElement>;
   hideName: boolean;
+  measure: () => void;
 }) => {
   const userInfo = channel?.getUserInfo(chat.sender);
   const emoticon = chat.attachment as EmoticonAttachment;
@@ -43,7 +45,10 @@ const Sticker = ({
             alt={'Emoticon'}
             height={160}
             onClick={playSound}
-            onLoad={playSound}
+            onLoad={() => {
+              measure();
+              playSound();
+            }}
           />
         </div>
       </div>

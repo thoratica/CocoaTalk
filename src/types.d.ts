@@ -82,3 +82,4 @@ declare interface ClientInfo {
 }
 
 declare module 'react-text-ellipsis';
+declare module 'react-imgp';
