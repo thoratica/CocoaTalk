@@ -15,6 +15,7 @@ import UnsupportedChat from './chat/Unsupported';
 import UnsupportedFeed from './chat/feed/Unsupported';
 import Deleted from './chat/Deleted';
 import Invite from './chat/feed/Invite';
+import MultiPhoto from './chat/MultiPhoto';
 
 const ChatroomItem = ({
   chat,
@@ -88,6 +89,8 @@ const ChatroomItem = ({
             return <Reply {...props} scrollTo={scrollTo} />;
           case KnownChatType.STICKER:
             return <Sticker {...props} measure={measure} />;
+          case KnownChatType.MULTIPHOTO:
+            return <MultiPhoto {...props} width={width} measure={measure} />;
           default:
             if (chat.type >= DELETED_MESSAGE_OFFSET) return <Deleted {...props} />;
 
