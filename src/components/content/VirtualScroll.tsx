@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { CellMeasurer, CellMeasurerCache, AutoSizer, List, ListRowProps } from 'react-virtualized';
 
 const cache = new CellMeasurerCache({
@@ -20,6 +20,10 @@ const VirtualScroll = ({
   useEffect(() => {
     cache.clearAll();
   }, [reRender]);
+
+  useEffect(() => {
+    console.log(listRef.current!.scrollToRow(items.length + 1));
+  }, [items]);
 
   const rowRenderer = ({ index, key, parent, style }: ListRowProps) => {
     return (

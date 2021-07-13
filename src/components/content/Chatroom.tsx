@@ -63,9 +63,8 @@ const Chatroom = () => {
   }, []);
   useEffect(() => {
     setName(channel?.getDisplayName() ?? '(알 수 없음)');
-    setTimeout(() => listRef.current?.scrollToRow(chatList.length ?? 0), 100);
   }, [selected]);
-  useEffect(() => void (useAutoScroll && listRef.current?.scrollToRow(chatList.length ?? 0)), [s]);
+  useEffect(() => void useAutoScroll, [s]);
 
   const items =
     chatList.map((chat, key) => {

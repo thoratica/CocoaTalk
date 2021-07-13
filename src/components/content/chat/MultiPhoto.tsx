@@ -74,14 +74,14 @@ const MultiPhoto = ({
         <div className={'text'}>
           {!hideName && <div className={'name'}>{userInfo?.nickname ?? '(알 수 없음)'}</div>}
           {(chat.attachment as MultiPhotoAttachment).imageUrls.map((url, i) => (
-            <>
+            <React.Fragment key={i}>
               {i !== 0 && <div className={'space'} />}
               <Photo
                 attachment={{ h: (chat.attachment as MultiPhotoAttachment).hl[i], w: (chat.attachment as MultiPhotoAttachment).wl[i], url }}
                 width={width}
                 measure={measure}
               />
-            </>
+            </React.Fragment>
           ))}
         </div>
       </div>
